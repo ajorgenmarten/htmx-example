@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo htmx</title>
+    <script src="script.js"></script>
+    <script src="client-side-templates.js"></script>
+    <script src="hbs.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <form class="add-todo" 
+          hx-post="http://localhost:3001/add" 
+          hx-swap="beforeend" 
+          hx-ext="client-side-templates" 
+          hx-target="#todo-list" 
+          hx-on:submit="this.reset()"
+          handlebars-template="todo-item-added">
+
+        <input type="text" name="title" placeholder="Escribe el titulo de la tarea" required>
+        <textarea name="description" rows="5" placeholder="Escribe la descripcion de la tarea..."></textarea>
+        <button type="submit">Agregar</button>
+
+    </form>
+
+    <ul hx-get="http://localhost:3001/list" 
+        hx-trigger="load" 
+        hx-ext="client-side-templates"
+        hx-swap="innerHTML"
+        handlebars-template="todo-list-template"
+        id="todo-list">
+    </ul>
+
+
+    <template id="todo-list-template">
+        {{#each data}}
+        <li>
+            <div class="info">
+                <label for="todo-{{id}}">
+                    {{#if status}}
+                        <input type="checkbox" 
+                               checked 
+                               id="todo-{{id}}"
+                               hx-post="http://localhost:3001/toggle?id={{id}}"
+                               hx-trigger="click"
+                               hx-swap="innerHTML"
+                               hx-ext="client-side-templates"
+                               hx-target="#todo-list"> <b> {{title}} </b>
+                    {{else}}
+                        <input type="checkbox" id="todo-{{id}}"
+                               hx-post="http://localhost:3001/toggle?id={{id}}"
+                               hx-trigger="click"
+                               hx-swap="innerHTML"
+                               hx-ext="client-side-templates"
+                               hx-target="#todo-list"> <b> {{title}} </b>
+                    {{/if}}
+                </label>
+                <p>{{description}}</p>
+            </div>
+            <div class="opts">
+                <button hx-delete="http://localhost:3001/delete?id={{id}}" 
+                        hx-trigger="click"
+                        hx-swap="innerHTML"
+                        hx-ext="client-side-templates"
+                        handlebars-template="todo-list-template"
+                        hx-target="#todo-list"
+                        hx-confirm="Desea eliminar la tarea?" >delete</button>
+            </div>
+        </li>
+        {{/each}}
+    </template>
+    <template id="todo-item-added">
+        <li>
+            <div class="info">
+                <label for="todo-{{data.id}}">
+                    {{#if data.status}}
+                        <input type="checkbox" checked id="todo-{{data.id}}"
+                        hx-post="http://localhost:3001/toggle?id={{id}}"
+                               hx-trigger="click"
+                               hx-swap="innerHTML"
+                               hx-ext="client-side-templates"
+                               hx-target="#todo-list"> <b> {{data.title}} </b>
+                    {{else}}
+                        <input type="checkbox" id="todo-{{data.id}}"
+                        hx-post="http://localhost:3001/toggle?id={{id}}"
+                               hx-trigger="click"
+                               hx-swap="innerHTML"
+                               hx-ext="client-side-templates"
+                               hx-target="#todo-list"> <b> {{data.title}} </b>
+                    {{/if}}
+                </label>
+                <p>{{data.description}}</p>
+            </div>
+            <div class="opts">
+                <button hx-delete="http://localhost:3001/delete?id={{data.id}}"
+                hx-confirm="Desea eliminar la tarea?"
+                hx-trigger="click"
+                hx-swap="innerHTML"
+                hx-ext="client-side-templates"
+                handlebars-template="todo-list-template"
+                hx-target="#todo-list">delete</button>
+            </div>
+        </li>
+    </template>
+</body>
+
+</html>
