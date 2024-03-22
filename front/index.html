@@ -13,7 +13,7 @@
 
 <body>
     <form class="add-todo" 
-          hx-post="http://localhost:3001/add" 
+          hx-post="https://htmx-example-ev0c.onrender.com/add" 
           hx-swap="beforeend" 
           hx-ext="client-side-templates" 
           hx-target="#todo-list" 
@@ -26,7 +26,7 @@
 
     </form>
 
-    <ul hx-get="http://localhost:3001/list" 
+    <ul hx-get="https://htmx-example-ev0c.onrender.com/list" 
         hx-trigger="load" 
         hx-ext="client-side-templates"
         hx-swap="innerHTML"
@@ -44,7 +44,7 @@
                         <input type="checkbox" 
                                checked 
                                id="todo-{{id}}"
-                               hx-post="http://localhost:3001/toggle?id={{id}}"
+                               hx-post="https://htmx-example-ev0c.onrender.com/toggle?id={{id}}"
                                hx-trigger="click"
                                hx-swap="innerHTML"
                                hx-ext="client-side-templates"
@@ -61,7 +61,7 @@
                 <p>{{description}}</p>
             </div>
             <div class="opts">
-                <button hx-delete="http://localhost:3001/delete?id={{id}}" 
+                <button hx-delete="https://htmx-example-ev0c.onrender.com/delete?id={{id}}" 
                         hx-trigger="click"
                         hx-swap="innerHTML"
                         hx-ext="client-side-templates"
@@ -78,14 +78,14 @@
                 <label for="todo-{{data.id}}">
                     {{#if data.status}}
                         <input type="checkbox" checked id="todo-{{data.id}}"
-                        hx-post="http://localhost:3001/toggle?id={{id}}"
+                        hx-post="https://htmx-example-ev0c.onrender.com/toggle?id={{id}}"
                                hx-trigger="click"
                                hx-swap="innerHTML"
                                hx-ext="client-side-templates"
                                hx-target="#todo-list"> <b> {{data.title}} </b>
                     {{else}}
                         <input type="checkbox" id="todo-{{data.id}}"
-                        hx-post="http://localhost:3001/toggle?id={{id}}"
+                        hx-post="https://htmx-example-ev0c.onrender.com/toggle?id={{id}}"
                                hx-trigger="click"
                                hx-swap="innerHTML"
                                hx-ext="client-side-templates"
@@ -95,7 +95,7 @@
                 <p>{{data.description}}</p>
             </div>
             <div class="opts">
-                <button hx-delete="http://localhost:3001/delete?id={{data.id}}"
+                <button hx-delete="https://htmx-example-ev0c.onrender.com/delete?id={{data.id}}"
                 hx-confirm="Desea eliminar la tarea?"
                 hx-trigger="click"
                 hx-swap="innerHTML"
